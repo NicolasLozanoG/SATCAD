@@ -8,6 +8,56 @@ import { MachineShape } from './MachineShapes';
 
 const UNIT = 8;
 
+const getDragBuildPositions = (type, startPos, endPos, startElev, endElev, rotation) => {
+  const bData = BUILDINGS[type];
+  if (!bData) return [];
+  if (bData.subCategory !== 'foundation' && bData.subCategory !== 'wall') {
+    return [{ x: endPos.x, y: endElev, z: endPos.z }];
+  }
+
+  const snap = UNIT / 8;
+  const x1 = Math.round(startPos.x / snap) * snap;
+  const z1 = Math.round(startPos.z / snap) * snap;
+  const y1 = startElev;
+  
+  const x2 = Math.round(endPos.x / snap) * snap;
+  const z2 = Math.round(endPos.z / snap) * snap;
+  
+  const positions = [];
+  
+  const isSwapped = Math.abs(Math.sin(rotation)) > 0.5;
+  const stepX = (isSwapped ? bData.depth : bData.width) * UNIT;
+  const stepZ = (isSwapped ? bData.width : bData.depth) * UNIT;
+
+  if (bData.subCategory === 'foundation') {
+    const minX = Math.min(x1, x2);
+    const maxX = Math.max(x1, x2);
+    const minZ = Math.min(z1, z2);
+    const maxZ = Math.max(z1, z2);
+    
+    for (let x = minX; x <= maxX + 0.001; x += stepX) {
+      for (let z = minZ; z <= maxZ + 0.001; z += stepZ) {
+        positions.push({ x, y: y1, z });
+      }
+    }
+  } else if (bData.subCategory === 'wall') {
+    if (Math.abs(x2 - x1) > Math.abs(z2 - z1)) {
+      const minX = Math.min(x1, x2);
+      const maxX = Math.max(x1, x2);
+      for (let x = minX; x <= maxX + 0.001; x += stepX) {
+        positions.push({ x, y: y1, z: z1 });
+      }
+    } else {
+      const minZ = Math.min(z1, z2);
+      const maxZ = Math.max(z1, z2);
+      for (let z = minZ; z <= maxZ + 0.001; z += stepZ) {
+        positions.push({ x: x1, y: y1, z });
+      }
+    }
+  }
+  return positions;
+};
+
 const SelectionProjector = () => {
   const { camera } = useThree();
   const { buildings, setSelectedEntity } = useFactoryStore();
@@ -57,19 +107,31 @@ const Port = ({ isInput, position, onClick }) => {
   );
 };
 
-const BuildingModel = ({ data, buildingData, isSelected, isMoving, onSelect, onPortClick, connectingFrom, onHover, activeTool, moveModeBuildingId, onPlaceBuilding }) => {
+const BuildingModel = ({ data, buildingData, isSelected, isMoving, onSelect, onDoubleClick, onPortClick, connectingFrom, onHover, activeTool, moveModeBuildingId, onPlaceBuildingDown, onPlaceBuildingUp, onPlaceBuildingClick }) => {
   const color = isSelected ? '#ffffff' : buildingData.color;
   const w = buildingData.width * UNIT;
   const d = buildingData.depth * UNIT;
   const h = buildingData.height * UNIT;
   const rotation = data.rotation || 0;
 
+  const handlePointerDown = (e) => {
+    if (e.button === 0 && (activeTool || moveModeBuildingId)) {
+      if (onPlaceBuildingDown) onPlaceBuildingDown(e);
+    }
+  };
+
+  const handlePointerUp = (e) => {
+    if (e.button === 0 && (activeTool || moveModeBuildingId)) {
+      if (onPlaceBuildingUp) onPlaceBuildingUp(e);
+    }
+  };
+
   const handleClick = (e) => {
     e.stopPropagation();
     if (e.button !== 0) return;
     
     if (activeTool || moveModeBuildingId) {
-      if (onPlaceBuilding) onPlaceBuilding(e);
+      if (onPlaceBuildingClick) onPlaceBuildingClick(e);
       return;
     }
 
@@ -79,13 +141,21 @@ const BuildingModel = ({ data, buildingData, isSelected, isMoving, onSelect, onP
         const rx = inp.x * Math.cos(rotation) - inp.z * Math.sin(rotation);
         const rz = inp.x * Math.sin(rotation) + inp.z * Math.cos(rotation);
         const wx = data.x * UNIT + (rx * UNIT);
-        const wy = data.y * UNIT + 2; // Ports are at height 2 from the building's base
+        const wy = data.y * UNIT + 2;
         const wz = data.z * UNIT + (rz * UNIT);
         onPortClick(data.id, inp.id, 'input', wx, wy, wz);
         return;
       }
     }
     onSelect(data.id, e.shiftKey);
+  };
+
+  const handleDoubleClick = (e) => {
+    e.stopPropagation();
+    if (e.button !== 0) return;
+    if (!activeTool && !moveModeBuildingId) {
+      if (onDoubleClick) onDoubleClick(data.id);
+    }
   };
 
   const handlePointerMove = (e) => {
@@ -104,16 +174,18 @@ const BuildingModel = ({ data, buildingData, isSelected, isMoving, onSelect, onP
         rotation={rotation}
         isMoving={isMoving}
         isSelected={isSelected}
+        onPointerDown={handlePointerDown}
+        onPointerUp={handlePointerUp}
         onClick={handleClick}
+        onDoubleClick={handleDoubleClick}
         onPointerMove={handlePointerMove}
       />
 
-      {/* Render Outputs */}
       {!isMoving && buildingData.outputs && buildingData.outputs.map(out => {
         const rx = out.x * Math.cos(rotation) - out.z * Math.sin(rotation);
         const rz = out.x * Math.sin(rotation) + out.z * Math.cos(rotation);
         const px = rx * UNIT;
-        const py = 2; // Standard fixed height relative to building base
+        const py = 2;
         const pz = rz * UNIT;
         return (
           <Port 
@@ -125,7 +197,6 @@ const BuildingModel = ({ data, buildingData, isSelected, isMoving, onSelect, onP
         );
       })}
 
-      {/* Render Inputs */}
       {!isMoving && buildingData.inputs && buildingData.inputs.map(inp => {
         const rx = inp.x * Math.cos(rotation) - inp.z * Math.sin(rotation);
         const rz = inp.x * Math.sin(rotation) + inp.z * Math.cos(rotation);
@@ -196,11 +267,23 @@ const ConveyorBelt = ({ id, sourcePos, targetPos, buildMode, isSelected, onSelec
   return <Line points={[sourcePos, targetPos]} color={color} lineWidth={isSelected ? 5 : 3} onClick={handleClick} />;
 };
 
-const PlacementGrid = ({ activeTool, cursorPosRef, currentRotation, moveModeBuildingId, targetElevationRef, onHover, handlePlacementClick, onClearSelection }) => {
+const PlacementGrid = ({ activeTool, moveModeBuildingId, onHover, handlePlacementDown, handlePlacementUp, handlePlacementClick, onClearSelection }) => {
+  const handleDown = (e) => {
+    if (e.button === 0 && (activeTool || moveModeBuildingId)) {
+      if (handlePlacementDown) handlePlacementDown(e);
+    }
+  };
+
+  const handleUp = (e) => {
+    if (e.button === 0 && (activeTool || moveModeBuildingId)) {
+      if (handlePlacementUp) handlePlacementUp(e);
+    }
+  };
+
   const handleClick = (e) => {
     if (e.button === 0) {
       if (activeTool || moveModeBuildingId) {
-        if (handlePlacementClick) handlePlacementClick();
+        if (handlePlacementClick) handlePlacementClick(e);
       } else {
         if (onClearSelection) onClearSelection(e);
       }
@@ -212,32 +295,38 @@ const PlacementGrid = ({ activeTool, cursorPosRef, currentRotation, moveModeBuil
   };
 
   return (
-    <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.01, 0]} onClick={handleClick} onPointerMove={handlePointerMove} receiveShadow>
+    <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.01, 0]} onPointerDown={handleDown} onPointerUp={handleUp} onClick={handleClick} onPointerMove={handlePointerMove} receiveShadow>
       <planeGeometry args={[1000, 1000]} />
       <meshBasicMaterial transparent opacity={0} />
     </mesh>
   );
 };
 
-// Ghost Building Preview
-const GhostBuilding = ({ type, cursorPosRef, rotation, moveModeBuildingId, targetElevationRef }) => {
+const GhostBuildingPreview = ({ type, cursorPosRef, rotation, moveModeBuildingId, targetElevationRef, dragStartInfo, isDraggingBuild }) => {
   const { checkCollision } = useFactoryStore();
-  const groupRef = useRef();
-  const [isColliding, setIsColliding] = useState(false);
+  const [positions, setPositions] = useState([]);
   const bData = BUILDINGS[type];
   
   useFrame(() => {
-    if (groupRef.current && cursorPosRef.current) {
-      const snap = UNIT / 8;
-      const x = Math.round(cursorPosRef.current.x / snap) * snap;
-      const z = Math.round(cursorPosRef.current.z / snap) * snap;
-      const y = targetElevationRef.current;
-      
-      groupRef.current.position.set(x, y * UNIT, z);
-      
-      const colliding = checkCollision(type, x / UNIT, y, z / UNIT, rotation, moveModeBuildingId);
-      if (colliding !== isColliding) {
-        setIsColliding(colliding);
+    if (cursorPosRef.current) {
+      if (isDraggingBuild && dragStartInfo) {
+        const newPositions = getDragBuildPositions(type, dragStartInfo.startPos, cursorPosRef.current, dragStartInfo.elevation, targetElevationRef.current, rotation);
+        setPositions(prev => {
+          if (prev.length !== newPositions.length) return newPositions;
+          if (prev.length > 0 && (prev[0].x !== newPositions[0].x || prev[prev.length-1].x !== newPositions[newPositions.length-1].x || prev[prev.length-1].z !== newPositions[newPositions.length-1].z)) return newPositions;
+          return prev;
+        });
+      } else {
+        const snap = UNIT / 8;
+        const x = Math.round(cursorPosRef.current.x / snap) * snap;
+        const z = Math.round(cursorPosRef.current.z / snap) * snap;
+        const y = targetElevationRef.current;
+        setPositions(prev => {
+           if (prev.length !== 1 || prev[0].x !== x || prev[0].y !== y || prev[0].z !== z) {
+             return [{ x, y, z }];
+           }
+           return prev;
+        });
       }
     }
   });
@@ -246,47 +335,57 @@ const GhostBuilding = ({ type, cursorPosRef, rotation, moveModeBuildingId, targe
   const w = bData.width * UNIT;
   const d = bData.depth * UNIT;
   const h = bData.height * UNIT;
-  const color = isColliding ? '#ef4444' : bData.color;
 
   return (
-    <group ref={groupRef}>
-      <MachineShape 
-        type={type}
-        w={w} h={h} d={d}
-        color={color}
-        rotation={rotation}
-        isMoving={true} // Makes it semi-transparent
-        isSelected={false}
-      />
-      <group rotation={[0, -rotation, 0]}>
-        {bData.outputs && bData.outputs.map(out => (
-          <Box key={`out-${out.id}`} args={[2.5, 2.5, 2.5]} position={[out.x * UNIT, 2, out.z * UNIT]}>
-            <meshStandardMaterial color="#fa9549" transparent opacity={0.7} />
-          </Box>
-        ))}
-        {bData.inputs && bData.inputs.map(inp => (
-          <Box key={`inp-${inp.id}`} args={[2.5, 2.5, 2.5]} position={[inp.x * UNIT, 2, inp.z * UNIT]}>
-            <meshStandardMaterial color="#22c55e" transparent opacity={0.7} />
-          </Box>
-        ))}
-      </group>
+    <group>
+      {positions.map((pos, idx) => {
+        const isColliding = checkCollision(type, pos.x / UNIT, pos.y, pos.z / UNIT, rotation, moveModeBuildingId);
+        const color = isColliding ? '#ef4444' : bData.color;
+        return (
+          <group key={idx} position={[pos.x, pos.y * UNIT, pos.z]}>
+            <MachineShape 
+              type={type}
+              w={w} h={h} d={d}
+              color={color}
+              rotation={rotation}
+              isMoving={true} 
+              isSelected={false}
+            />
+            <group rotation={[0, -rotation, 0]}>
+              {bData.outputs && bData.outputs.map(out => (
+                <Box key={`out-${out.id}`} args={[2.5, 2.5, 2.5]} position={[out.x * UNIT, 2, out.z * UNIT]} raycast={() => null}>
+                  <meshStandardMaterial color="#fa9549" transparent opacity={0.7} />
+                </Box>
+              ))}
+              {bData.inputs && bData.inputs.map(inp => (
+                <Box key={`inp-${inp.id}`} args={[2.5, 2.5, 2.5]} position={[inp.x * UNIT, 2, inp.z * UNIT]} raycast={() => null}>
+                  <meshStandardMaterial color="#22c55e" transparent opacity={0.7} />
+                </Box>
+              ))}
+            </group>
+          </group>
+        );
+      })}
     </group>
   );
 };
 
 export const Canvas3D = ({ activeTool, setActiveTool }) => {
-  const { buildings, connections, addConnection, selectedIds, cameraMode, blueprintSize, moveModeBuildingId, setSelectedEntity, checkCollision, addBuilding, updateBuilding, setMoveMode } = useFactoryStore();
+  const { buildings, connections, addConnection, selectedIds, cameraMode, blueprintSize, showBlueprintBox, moveModeBuildingId, setSelectedEntity, checkCollision, addBuilding, updateBuilding, setMoveMode } = useFactoryStore();
   const [connectingFrom, setConnectingFrom] = useState(null);
   
-  // Custom rotation state for placement
   const [currentRotation, setCurrentRotation] = useState(0);
   const cursorPosRef = useRef(new THREE.Vector3());
   const targetElevationRef = useRef(0);
   
-  // Selection box and Shift state
   const [boxStart, setBoxStart] = useState(null);
   const [boxCurrent, setBoxCurrent] = useState(null);
   const [isShiftDown, setIsShiftDown] = useState(false);
+
+  // Drag build state
+  const dragStartInfoRef = useRef(null);
+  const [isDraggingBuild, setIsDraggingBuild] = useState(false);
+  const justFinishedDragRef = useRef(false);
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -303,7 +402,6 @@ export const Canvas3D = ({ activeTool, setActiveTool }) => {
     };
   }, []);
 
-  // Sync rotation when entering move mode
   useEffect(() => {
     if (moveModeBuildingId) {
       const b = buildings.find(b => b.id === moveModeBuildingId);
@@ -311,7 +409,6 @@ export const Canvas3D = ({ activeTool, setActiveTool }) => {
     }
   }, [moveModeBuildingId, buildings]);
 
-  // Handle R key for rotation and Escape to cancel tool
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key.toLowerCase() === 'r') {
@@ -321,6 +418,8 @@ export const Canvas3D = ({ activeTool, setActiveTool }) => {
         if (setActiveTool) setActiveTool(null);
         if (setMoveMode) setMoveMode(null);
         setConnectingFrom(null);
+        setIsDraggingBuild(false);
+        dragStartInfoRef.current = null;
       }
       if (e.key === 'Delete' || e.key === 'Backspace') {
         if (e.target.tagName.toLowerCase() === 'input' || e.target.tagName.toLowerCase() === 'textarea') return;
@@ -348,20 +447,20 @@ export const Canvas3D = ({ activeTool, setActiveTool }) => {
     setConnectingFrom(null);
   };
 
-  const handlePointerDown = (e) => {
+  const handlePointerDownWrapper = (e) => {
     if (e.shiftKey && e.button === 0) {
       setBoxStart({ x: e.clientX, y: e.clientY });
       setBoxCurrent({ x: e.clientX, y: e.clientY });
     }
   };
 
-  const handlePointerMove = (e) => {
+  const handlePointerMoveWrapper = (e) => {
     if (boxStart) {
       setBoxCurrent({ x: e.clientX, y: e.clientY });
     }
   };
 
-  const handlePointerUp = (e) => {
+  const handlePointerUpWrapper = (e) => {
     if (boxStart && boxCurrent) {
       const minX = Math.min(boxStart.x, boxCurrent.x);
       const maxX = Math.max(boxStart.x, boxCurrent.x);
@@ -369,12 +468,7 @@ export const Canvas3D = ({ activeTool, setActiveTool }) => {
       const maxY = Math.max(boxStart.y, boxCurrent.y);
       
       if (maxX - minX > 5 || maxY - minY > 5) {
-        // Find canvas element to project coordinates
         const canvasRect = e.target.getBoundingClientRect();
-        
-        // This requires access to the camera inside Canvas.
-        // We'll dispatch a custom event that a child component inside Canvas will catch
-        // because we can't easily access the camera from here (outside Canvas scope).
         window.dispatchEvent(new CustomEvent('boxSelectionComplete', {
           detail: { minX, maxX, minY, maxY, canvasRect }
         }));
@@ -425,7 +519,44 @@ export const Canvas3D = ({ activeTool, setActiveTool }) => {
     }
   };
 
+  const handlePlacementDown = (e) => {
+    if (activeTool && !moveModeBuildingId && !isShiftDown) {
+      const bData = BUILDINGS[activeTool];
+      if (bData && (bData.subCategory === 'foundation' || bData.subCategory === 'wall')) {
+        dragStartInfoRef.current = {
+          startPos: cursorPosRef.current.clone(),
+          elevation: targetElevationRef.current
+        };
+        setIsDraggingBuild(true);
+      }
+    }
+  };
+
+  const handlePlacementUp = (e) => {
+    if (isDraggingBuild && dragStartInfoRef.current) {
+      const positions = getDragBuildPositions(activeTool, dragStartInfoRef.current.startPos, cursorPosRef.current, dragStartInfoRef.current.elevation, targetElevationRef.current, currentRotation);
+      
+      if (positions.length > 1) {
+        positions.forEach(pos => {
+          const px = pos.x / UNIT;
+          const pz = pos.z / UNIT;
+          if (!useFactoryStore.getState().checkCollision(activeTool, px, pos.y, pz, currentRotation, null)) {
+            addBuilding(activeTool, px, pos.y, pz, currentRotation);
+          }
+        });
+        justFinishedDragRef.current = true;
+      }
+      setIsDraggingBuild(false);
+      dragStartInfoRef.current = null;
+    }
+  };
+
   const handlePlacementClick = () => {
+    if (justFinishedDragRef.current) {
+      justFinishedDragRef.current = false;
+      return;
+    }
+
     if (!activeTool && !moveModeBuildingId) return;
 
     const snap = UNIT / 8;
@@ -436,12 +567,12 @@ export const Canvas3D = ({ activeTool, setActiveTool }) => {
     const type = moveModeBuildingId ? buildings.find(b => b.id === moveModeBuildingId)?.type : activeTool;
     
     if (useFactoryStore.getState().checkCollision(type, x, y, z, currentRotation, moveModeBuildingId)) {
-      return; // Prevent placement on collision
+      return; 
     }
 
     if (moveModeBuildingId) {
       updateBuilding(moveModeBuildingId, { x, y, z, rotation: currentRotation });
-      setMoveMode(null); // Stop moving
+      setMoveMode(null); 
     } else if (activeTool) {
       addBuilding(activeTool, x, y, z, currentRotation);
     }
@@ -475,14 +606,16 @@ export const Canvas3D = ({ activeTool, setActiveTool }) => {
   return (
     <div 
       className="canvas-container" 
-      onPointerDown={handlePointerDown}
-      onPointerMove={handlePointerMove}
-      onPointerUp={handlePointerUp}
+      onPointerDown={handlePointerDownWrapper}
+      onPointerMove={handlePointerMoveWrapper}
+      onPointerUp={handlePointerUpWrapper}
       onContextMenu={(e) => { 
         e.preventDefault(); 
         setConnectingFrom(null); 
         if (setActiveTool) setActiveTool(null); 
         if (setMoveMode) setMoveMode(null); 
+        setIsDraggingBuild(false);
+        dragStartInfoRef.current = null;
       }} 
     >
       {boxStart && boxCurrent && (
@@ -511,31 +644,38 @@ export const Canvas3D = ({ activeTool, setActiveTool }) => {
 
         <Grid infiniteGrid fadeDistance={200} sectionColor="#333333" cellColor="#222222" cellSize={UNIT / 2} sectionSize={UNIT} />
 
-        {/* Blueprint Boundary Box */}
-        <group position={[0, blueprintSize / 2, 0]} renderOrder={-1}>
-          <mesh>
-            <boxGeometry args={[blueprintSize, blueprintSize, blueprintSize]} />
-            <meshBasicMaterial color="#3b82f6" transparent opacity={0.05} depthWrite={false} side={THREE.DoubleSide} />
-          </mesh>
-          <mesh>
-            <boxGeometry args={[blueprintSize, blueprintSize, blueprintSize]} />
-            <meshBasicMaterial color="#3b82f6" wireframe transparent opacity={0.2} />
-          </mesh>
-        </group>
+        {showBlueprintBox && (
+          <group position={[0, blueprintSize / 2, 0]} renderOrder={-1}>
+            <mesh>
+              <boxGeometry args={[blueprintSize, blueprintSize, blueprintSize]} />
+              <meshBasicMaterial color="#3b82f6" transparent opacity={0.05} depthWrite={false} side={THREE.DoubleSide} />
+            </mesh>
+            <mesh>
+              <boxGeometry args={[blueprintSize, blueprintSize, blueprintSize]} />
+              <meshBasicMaterial color="#3b82f6" wireframe transparent opacity={0.2} />
+            </mesh>
+          </group>
+        )}
 
         <PlacementGrid 
-          activeTool={activeTool} cursorPosRef={cursorPosRef} currentRotation={currentRotation} 
-          moveModeBuildingId={moveModeBuildingId} targetElevationRef={targetElevationRef} 
-          onHover={handleHover} handlePlacementClick={handlePlacementClick} onClearSelection={handleCanvasMissed}
+          activeTool={activeTool} 
+          moveModeBuildingId={moveModeBuildingId}
+          onHover={handleHover} 
+          handlePlacementDown={handlePlacementDown}
+          handlePlacementUp={handlePlacementUp}
+          handlePlacementClick={handlePlacementClick} 
+          onClearSelection={handleCanvasMissed}
         />
         
         {(activeTool || moveModeBuildingId) && (
-          <GhostBuilding 
+          <GhostBuildingPreview 
             type={moveModeBuildingId ? buildings.find(b => b.id === moveModeBuildingId)?.type : activeTool} 
             cursorPosRef={cursorPosRef} 
             rotation={currentRotation} 
             moveModeBuildingId={moveModeBuildingId}
             targetElevationRef={targetElevationRef}
+            dragStartInfo={dragStartInfoRef.current}
+            isDraggingBuild={isDraggingBuild}
           />
         )}
 
@@ -543,8 +683,11 @@ export const Canvas3D = ({ activeTool, setActiveTool }) => {
           <BuildingModel 
             key={b.id} data={b} buildingData={BUILDINGS[b.type]}
             isSelected={selectedIds.includes(b.id)} isMoving={moveModeBuildingId === b.id}
-            onSelect={setSelectedEntity} onPortClick={handlePortClick} connectingFrom={connectingFrom}
-            onHover={handleHover} activeTool={activeTool} moveModeBuildingId={moveModeBuildingId} onPlaceBuilding={() => handlePlacementClick()}
+            onSelect={setSelectedEntity} onDoubleClick={setMoveMode} onPortClick={handlePortClick} connectingFrom={connectingFrom}
+            onHover={handleHover} activeTool={activeTool} moveModeBuildingId={moveModeBuildingId} 
+            onPlaceBuildingDown={handlePlacementDown}
+            onPlaceBuildingUp={handlePlacementUp}
+            onPlaceBuildingClick={handlePlacementClick}
           />
         ))}
 
@@ -554,8 +697,8 @@ export const Canvas3D = ({ activeTool, setActiveTool }) => {
         <OrbitControls 
           makeDefault 
           enableDamping={false} 
-          enableRotate={cameraMode === '3D' && !isShiftDown} 
-          enablePan={!isShiftDown}
+          enableRotate={cameraMode === '3D' && !isShiftDown && !isDraggingBuild} 
+          enablePan={!isShiftDown && !isDraggingBuild}
           enableZoom={!isShiftDown}
           maxPolarAngle={cameraMode === '2D' ? 0 : Math.PI / 2.1} 
           minPolarAngle={cameraMode === '2D' ? 0 : 0} 

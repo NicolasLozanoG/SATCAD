@@ -2,7 +2,7 @@ import React from 'react';
 import { Box } from '@react-three/drei';
 import * as THREE from 'three';
 
-export const MachineShape = ({ type, w, h, d, color, isMoving, isSelected, onClick, onPointerMove, rotation }) => {
+export const MachineShape = ({ type, w, h, d, color, isMoving, isSelected, onClick, onPointerMove, onPointerDown, onPointerUp, onDoubleClick, rotation }) => {
   return (
     <group position={[0, 0, 0]}>
       <Box 
@@ -11,6 +11,10 @@ export const MachineShape = ({ type, w, h, d, color, isMoving, isSelected, onCli
         rotation={[0, -rotation, 0]}
         onClick={onClick}
         onPointerMove={onPointerMove}
+        onPointerDown={onPointerDown}
+        onPointerUp={onPointerUp}
+        onDoubleClick={onDoubleClick}
+        raycast={isMoving ? () => null : undefined}
       >
         <meshStandardMaterial 
           color={color} 

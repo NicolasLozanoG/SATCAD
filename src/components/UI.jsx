@@ -4,13 +4,13 @@ import { BUILDINGS } from '../data/buildings';
 import { RECIPES } from '../data/recipes';
 import { parseBlueprint } from '../utils/blueprintParser';
 import { exportToBlueprint } from '../utils/blueprintExporter';
-import { Settings, Save, Upload, Cuboid, BoxSelect, Trash2, Menu, ChevronDown, ChevronRight, Workflow } from 'lucide-react';
+import { Settings, Save, Upload, Cuboid, BoxSelect, Trash2, Menu, ChevronDown, ChevronRight, Workflow, Eye, EyeOff } from 'lucide-react';
 
 export const UI = ({ activeTool, setActiveTool }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [openCategory, setOpenCategory] = useState('Fábrica');
   const [recipeTab, setRecipeTab] = useState('standard'); // 'standard' or 'alternate'
-  const { selectedIds, buildings, connections, cameraMode, setCameraMode, removeBuilding, updateBuilding, removeConnection, updateConnection, removeSelected, exportBlueprint, importBlueprint, moveModeBuildingId, setMoveMode } = useFactoryStore();
+  const { selectedIds, buildings, connections, cameraMode, setCameraMode, removeBuilding, updateBuilding, removeConnection, updateConnection, removeSelected, exportBlueprint, importBlueprint, moveModeBuildingId, setMoveMode, showBlueprintBox, setShowBlueprintBox } = useFactoryStore();
   
   const selectedBuildings = buildings.filter(b => selectedIds.includes(b.id));
   const selectedConns = connections.filter(c => selectedIds.includes(c.id));
@@ -126,6 +126,14 @@ export const UI = ({ activeTool, setActiveTool }) => {
               <option value={40}>Mk.2 (40m)</option>
               <option value={48}>Mk.3 (48m)</option>
             </select>
+            <button 
+              className={`btn ${showBlueprintBox ? 'btn-primary' : ''}`}
+              style={{ padding: '4px', background: 'transparent', border: 'none', cursor: 'pointer' }}
+              onClick={() => setShowBlueprintBox(!showBlueprintBox)}
+              title={showBlueprintBox ? "Ocultar Límite" : "Mostrar Límite"}
+            >
+              {showBlueprintBox ? <Eye size={18} color="#888" /> : <EyeOff size={18} color="#888" />}
+            </button>
           </div>
 
           <div style={{width: '24px'}} /> {/* Spacer */}

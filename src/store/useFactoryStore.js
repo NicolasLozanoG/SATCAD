@@ -31,7 +31,10 @@ export const useFactoryStore = create((set, get) => ({
   selectedIds: [],
   cameraMode: '3D', // '2D' or '3D'
   blueprintSize: 32, // 32 = Mk.1, 40 = Mk.2, 48 = Mk.3
+  showBlueprintBox: true,
   moveModeBuildingId: null, // ID of building currently being moved
+
+  setShowBlueprintBox: (show) => set({ showBlueprintBox: show }),
 
   setSelectedEntity: (id, shiftKey = false) => set((state) => {
     if (!id) return { selectedIds: [] };
@@ -65,11 +68,25 @@ export const useFactoryStore = create((set, get) => ({
 
   checkCollision: (type, x, y, z, rotation, excludeId = null) => {
     const { buildings } = get();
+    const bData = BUILDINGS[type];
+    
+    // Si es un muro, ignorar colisiones
+    if (bData && bData.subCategory === 'wall') {
+      return false;
+    }
+
     const newAABB = getAABB(null, type, x, y, z, rotation);
     const epsilon = 0.01; // Tolerance for stacking
     
     for (const b of buildings) {
       if (b.id === excludeId) continue;
+
+      const targetData = BUILDINGS[b.type];
+      // Ignorar colisiones con muros que ya estén colocados
+      if (targetData && targetData.subCategory === 'wall') {
+        continue;
+      }
+
       const bAABB = getAABB(b);
       
       if (
