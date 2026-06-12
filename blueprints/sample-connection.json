@@ -1,0 +1,33 @@
+{
+  "typePath": "/Script/FactoryGame.FGFactoryConnectionComponent",
+  "rootObject": "Persistent_Level",
+  "instanceName": "Persistent_Level:PersistentLevel.Build_SmelterMk1_C_2147408446.Output2",
+  "flags": 2097152,
+  "properties": {
+    "mConnectedComponent": {
+      "type": "ObjectProperty",
+      "name": "mConnectedComponent",
+      "propertyTagType": {
+        "name": "ObjectProperty",
+        "children": []
+      },
+      "value": {
+        "levelName": "Persistent_Level",
+        "pathName": "Persistent_Level:PersistentLevel.Build_ConveyorBeltMk1_C_2147402187.ConveyorAny0"
+      }
+    }
+  },
+  "specialProperties": {
+    "type": "EmptySpecialProperties"
+  },
+  "trailingData": [
+    0,
+    0,
+    0,
+    0
+  ],
+  "saveCustomVersion": 0,
+  "shouldMigrateObjectRefsToPersistent": false,
+  "parentEntityName": "Persistent_Level:PersistentLevel.Build_SmelterMk1_C_2147408446",
+  "type": "SaveComponent"
+}

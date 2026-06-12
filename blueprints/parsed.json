@@ -1,0 +1,1145 @@
+{
+  "name": "constructor",
+  "compressionInfo": {
+    "chunkHeaderVersion": 572662306,
+    "packageFileTag": 2653586369,
+    "maxUncompressedChunkContentSize": 131072,
+    "compressionAlgorithm": 3
+  },
+  "header": {
+    "headerVersion": 2,
+    "saveVersion": 60,
+    "buildVersion": 493833,
+    "designerDimension": {
+      "x": 4,
+      "y": 4,
+      "z": 4
+    },
+    "recipeReferences": [
+      {
+        "levelName": "",
+        "pathName": "/Game/FactoryGame/Recipes/Buildings/Recipe_ConstructorMk1.Recipe_ConstructorMk1_C"
+      }
+    ],
+    "itemCosts": [
+      [
+        {
+          "levelName": "",
+          "pathName": "/Game/FactoryGame/Resource/Parts/IronPlateReinforced/Desc_IronPlateReinforced.Desc_IronPlateReinforced_C"
+        },
+        2
+      ],
+      [
+        {
+          "levelName": "",
+          "pathName": "/Game/FactoryGame/Resource/Parts/Cable/Desc_Cable.Desc_Cable_C"
+        },
+        8
+      ]
+    ],
+    "objectVersionData": {
+      "saveObjectVersionDataVersion": 0,
+      "packageFileVersion": {
+        "ue4Version": 522,
+        "ue5Version": 1017
+      },
+      "licenceVersion": 3,
+      "engineVersion": {
+        "major": 5,
+        "minor": 6,
+        "patch": 1,
+        "changelist": 2147977481,
+        "branch": "++FactoryGame+rel-main-1.2.0"
+      },
+      "customVersionContainer": {
+        "versions": [
+          {
+            "guid": [
+              553926191,
+              333848534,
+              1362861393,
+              909550128
+            ],
+            "version": 60
+          },
+          {
+            "guid": [
+              4108721601,
+              2080545486,
+              2245514593,
+              3828312637
+            ],
+            "version": 28
+          },
+          {
+            "guid": [
+              1769854337,
+              3863953835,
+              2856997356,
+              3199710760
+            ],
+            "version": 121
+          },
+          {
+            "guid": [
+              1507482962,
+              305285448,
+              3094894968,
+              1891166603
+            ],
+            "version": 9
+          },
+          {
+            "guid": [
+              3634060866,
+              616385862,
+              2215816360,
+              3747878777
+            ],
+            "version": 56
+          },
+          {
+            "guid": [
+              1612519558,
+              2892255108,
+              2853622750,
+              233490390
+            ],
+            "version": 207
+          },
+          {
+            "guid": [
+              3489428543,
+              1135625344,
+              2475758815,
+              387784819
+            ],
+            "version": 37
+          },
+          {
+            "guid": [
+              3876086632,
+              1797475416,
+              2218335088,
+              371613329
+            ],
+            "version": 17
+          }
+        ]
+      }
+    }
+  },
+  "config": {
+    "configVersion": 6,
+    "description": "",
+    "color": {
+      "r": 0.10702300071716309,
+      "g": 0.4341540038585663,
+      "b": 0.5583410263061523,
+      "a": 1
+    },
+    "iconID": 782,
+    "referencedIconLibrary": "/Game/FactoryGame/-Shared/Blueprint/IconLibrary",
+    "iconLibraryType": "IconLibrary",
+    "lastEditedBy": {
+      "serviceProvider": 6,
+      "playerInfoTableIndex": 1
+    }
+  },
+  "objects": [
+    {
+      "typePath": "/Game/FactoryGame/Buildable/Factory/ConstructorMk1/Build_ConstructorMk1.Build_ConstructorMk1_C",
+      "rootObject": "Persistent_Level",
+      "instanceName": "Persistent_Level:PersistentLevel.Build_ConstructorMk1_C_2147477255",
+      "flags": 8,
+      "properties": {
+        "mInputInventory": {
+          "type": "ObjectProperty",
+          "name": "mInputInventory",
+          "propertyTagType": {
+            "name": "ObjectProperty",
+            "children": []
+          },
+          "value": {
+            "levelName": "Persistent_Level",
+            "pathName": "Persistent_Level:PersistentLevel.Build_ConstructorMk1_C_2147477255.InputInventory"
+          }
+        },
+        "mOutputInventory": {
+          "type": "ObjectProperty",
+          "name": "mOutputInventory",
+          "propertyTagType": {
+            "name": "ObjectProperty",
+            "children": []
+          },
+          "value": {
+            "levelName": "Persistent_Level",
+            "pathName": "Persistent_Level:PersistentLevel.Build_ConstructorMk1_C_2147477255.OutputInventory"
+          }
+        },
+        "mPowerInfo": {
+          "type": "ObjectProperty",
+          "name": "mPowerInfo",
+          "propertyTagType": {
+            "name": "ObjectProperty",
+            "children": []
+          },
+          "value": {
+            "levelName": "Persistent_Level",
+            "pathName": "Persistent_Level:PersistentLevel.Build_ConstructorMk1_C_2147477255.powerInfo"
+          }
+        },
+        "mTimeSinceStartStopProducing": {
+          "type": "FloatProperty",
+          "name": "mTimeSinceStartStopProducing",
+          "propertyTagType": {
+            "name": "FloatProperty",
+            "children": []
+          },
+          "value": 3.3999999521443642e+38
+        },
+        "mInventoryPotential": {
+          "type": "ObjectProperty",
+          "name": "mInventoryPotential",
+          "propertyTagType": {
+            "name": "ObjectProperty",
+            "children": []
+          },
+          "value": {
+            "levelName": "Persistent_Level",
+            "pathName": "Persistent_Level:PersistentLevel.Build_ConstructorMk1_C_2147477255.InventoryPotential"
+          }
+        },
+        "BuiltBy": {
+          "type": "StructProperty",
+          "name": "BuiltBy",
+          "propertyTagType": {
+            "name": "StructProperty",
+            "children": [
+              {
+                "name": "PlayerInfoHandle",
+                "children": [
+                  {
+                    "name": "/Script/FactoryGame",
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          },
+          "flags": 8,
+          "value": {
+            "serviceProvider": 6,
+            "playerInfoTableIndex": 1
+          }
+        },
+        "mCustomizationData": {
+          "type": "StructProperty",
+          "name": "mCustomizationData",
+          "propertyTagType": {
+            "name": "StructProperty",
+            "children": [
+              {
+                "name": "FactoryCustomizationData",
+                "children": [
+                  {
+                    "name": "/Script/FactoryGame",
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          },
+          "value": {
+            "type": "FactoryCustomizationData",
+            "properties": {
+              "SwatchDesc": {
+                "type": "ObjectProperty",
+                "name": "SwatchDesc",
+                "propertyTagType": {
+                  "name": "ObjectProperty",
+                  "children": []
+                },
+                "value": {
+                  "levelName": "",
+                  "pathName": "/Game/FactoryGame/Buildable/-Shared/Customization/Swatches/SwatchDesc_Slot0.SwatchDesc_Slot0_C"
+                }
+              }
+            }
+          }
+        },
+        "mBuiltWithRecipe": {
+          "type": "ObjectProperty",
+          "name": "mBuiltWithRecipe",
+          "propertyTagType": {
+            "name": "ObjectProperty",
+            "children": []
+          },
+          "value": {
+            "levelName": "",
+            "pathName": "/Game/FactoryGame/Recipes/Buildings/Recipe_ConstructorMk1.Recipe_ConstructorMk1_C"
+          }
+        }
+      },
+      "specialProperties": {
+        "type": "EmptySpecialProperties"
+      },
+      "trailingData": [],
+      "saveCustomVersion": 0,
+      "shouldMigrateObjectRefsToPersistent": false,
+      "parentEntityName": "",
+      "type": "SaveEntity",
+      "needTransform": true,
+      "wasPlacedInLevel": false,
+      "parentObject": {
+        "levelName": "Persistent_Level",
+        "pathName": "Persistent_Level:PersistentLevel.BuildableSubsystem"
+      },
+      "transform": {
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "w": 1
+        },
+        "translation": {
+          "x": 0.03653321787714958,
+          "y": -0.030248738825321198,
+          "z": 0.025211282074451447
+        },
+        "scale3d": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      "components": [
+        {
+          "levelName": "Persistent_Level",
+          "pathName": "Persistent_Level:PersistentLevel.Build_ConstructorMk1_C_2147477255.FGFactoryLegs"
+        },
+        {
+          "levelName": "Persistent_Level",
+          "pathName": "Persistent_Level:PersistentLevel.Build_ConstructorMk1_C_2147477255.InventoryPotential"
+        },
+        {
+          "levelName": "Persistent_Level",
+          "pathName": "Persistent_Level:PersistentLevel.Build_ConstructorMk1_C_2147477255.powerInfo"
+        },
+        {
+          "levelName": "Persistent_Level",
+          "pathName": "Persistent_Level:PersistentLevel.Build_ConstructorMk1_C_2147477255.InputInventory"
+        },
+        {
+          "levelName": "Persistent_Level",
+          "pathName": "Persistent_Level:PersistentLevel.Build_ConstructorMk1_C_2147477255.OutputInventory"
+        },
+        {
+          "levelName": "Persistent_Level",
+          "pathName": "Persistent_Level:PersistentLevel.Build_ConstructorMk1_C_2147477255.Output0"
+        },
+        {
+          "levelName": "Persistent_Level",
+          "pathName": "Persistent_Level:PersistentLevel.Build_ConstructorMk1_C_2147477255.Input0"
+        },
+        {
+          "levelName": "Persistent_Level",
+          "pathName": "Persistent_Level:PersistentLevel.Build_ConstructorMk1_C_2147477255.PowerInput"
+        }
+      ]
+    },
+    {
+      "typePath": "/Script/FactoryGame.FGFactoryLegsComponent",
+      "rootObject": "Persistent_Level",
+      "instanceName": "Persistent_Level:PersistentLevel.Build_ConstructorMk1_C_2147477255.FGFactoryLegs",
+      "flags": 2097152,
+      "properties": {
+        "mCachedFeetOffset": {
+          "type": "ArrayProperty",
+          "name": "mCachedFeetOffset",
+          "propertyTagType": {
+            "name": "ArrayProperty",
+            "children": [
+              {
+                "name": "StructProperty",
+                "children": [
+                  {
+                    "name": "FeetOffset",
+                    "children": [
+                      {
+                        "name": "/Script/FactoryGame",
+                        "children": []
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "values": [
+            {
+              "type": "FeetOffset",
+              "properties": {
+                "FeetIndex": {
+                  "type": "ByteProperty",
+                  "name": "FeetIndex",
+                  "propertyTagType": {
+                    "name": "ByteProperty",
+                    "children": []
+                  },
+                  "value": {
+                    "value": 1
+                  }
+                },
+                "OffsetZ": {
+                  "type": "FloatProperty",
+                  "name": "OffsetZ",
+                  "propertyTagType": {
+                    "name": "FloatProperty",
+                    "children": []
+                  },
+                  "value": 0
+                }
+              }
+            },
+            {
+              "type": "FeetOffset",
+              "properties": {
+                "FeetIndex": {
+                  "type": "ByteProperty",
+                  "name": "FeetIndex",
+                  "propertyTagType": {
+                    "name": "ByteProperty",
+                    "children": []
+                  },
+                  "value": {
+                    "value": 2
+                  }
+                },
+                "OffsetZ": {
+                  "type": "FloatProperty",
+                  "name": "OffsetZ",
+                  "propertyTagType": {
+                    "name": "FloatProperty",
+                    "children": []
+                  },
+                  "value": -0.00007963180541992188
+                }
+              }
+            },
+            {
+              "type": "FeetOffset",
+              "properties": {
+                "FeetIndex": {
+                  "type": "ByteProperty",
+                  "name": "FeetIndex",
+                  "propertyTagType": {
+                    "name": "ByteProperty",
+                    "children": []
+                  },
+                  "value": {
+                    "value": 3
+                  }
+                },
+                "OffsetZ": {
+                  "type": "FloatProperty",
+                  "name": "OffsetZ",
+                  "propertyTagType": {
+                    "name": "FloatProperty",
+                    "children": []
+                  },
+                  "value": -0.000015258787243510596
+                }
+              }
+            },
+            {
+              "type": "FeetOffset",
+              "properties": {
+                "FeetIndex": {
+                  "type": "ByteProperty",
+                  "name": "FeetIndex",
+                  "propertyTagType": {
+                    "name": "ByteProperty",
+                    "children": []
+                  },
+                  "value": {
+                    "value": 4
+                  }
+                },
+                "OffsetZ": {
+                  "type": "FloatProperty",
+                  "name": "OffsetZ",
+                  "propertyTagType": {
+                    "name": "FloatProperty",
+                    "children": []
+                  },
+                  "value": -0.00007963180541992188
+                }
+              }
+            }
+          ]
+        }
+      },
+      "specialProperties": {
+        "type": "EmptySpecialProperties"
+      },
+      "trailingData": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "saveCustomVersion": 0,
+      "shouldMigrateObjectRefsToPersistent": false,
+      "parentEntityName": "Persistent_Level:PersistentLevel.Build_ConstructorMk1_C_2147477255",
+      "type": "SaveComponent"
+    },
+    {
+      "typePath": "/Script/FactoryGame.FGPowerConnectionComponent",
+      "rootObject": "Persistent_Level",
+      "instanceName": "Persistent_Level:PersistentLevel.Build_ConstructorMk1_C_2147477255.PowerInput",
+      "flags": 2097152,
+      "properties": {},
+      "specialProperties": {
+        "type": "EmptySpecialProperties"
+      },
+      "trailingData": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "saveCustomVersion": 0,
+      "shouldMigrateObjectRefsToPersistent": false,
+      "parentEntityName": "Persistent_Level:PersistentLevel.Build_ConstructorMk1_C_2147477255",
+      "type": "SaveComponent"
+    },
+    {
+      "typePath": "/Script/FactoryGame.FGFactoryConnectionComponent",
+      "rootObject": "Persistent_Level",
+      "instanceName": "Persistent_Level:PersistentLevel.Build_ConstructorMk1_C_2147477255.Input0",
+      "flags": 2097152,
+      "properties": {},
+      "specialProperties": {
+        "type": "EmptySpecialProperties"
+      },
+      "trailingData": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "saveCustomVersion": 0,
+      "shouldMigrateObjectRefsToPersistent": false,
+      "parentEntityName": "Persistent_Level:PersistentLevel.Build_ConstructorMk1_C_2147477255",
+      "type": "SaveComponent"
+    },
+    {
+      "typePath": "/Script/FactoryGame.FGFactoryConnectionComponent",
+      "rootObject": "Persistent_Level",
+      "instanceName": "Persistent_Level:PersistentLevel.Build_ConstructorMk1_C_2147477255.Output0",
+      "flags": 2097152,
+      "properties": {},
+      "specialProperties": {
+        "type": "EmptySpecialProperties"
+      },
+      "trailingData": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "saveCustomVersion": 0,
+      "shouldMigrateObjectRefsToPersistent": false,
+      "parentEntityName": "Persistent_Level:PersistentLevel.Build_ConstructorMk1_C_2147477255",
+      "type": "SaveComponent"
+    },
+    {
+      "typePath": "/Script/FactoryGame.FGInventoryComponent",
+      "rootObject": "Persistent_Level",
+      "instanceName": "Persistent_Level:PersistentLevel.Build_ConstructorMk1_C_2147477255.InputInventory",
+      "flags": 262152,
+      "properties": {
+        "mInventoryStacks": {
+          "type": "ArrayProperty",
+          "name": "mInventoryStacks",
+          "propertyTagType": {
+            "name": "ArrayProperty",
+            "children": [
+              {
+                "name": "StructProperty",
+                "children": [
+                  {
+                    "name": "InventoryStack",
+                    "children": [
+                      {
+                        "name": "/Script/FactoryGame",
+                        "children": []
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "values": [
+            {
+              "type": "InventoryStack",
+              "properties": {
+                "Item": {
+                  "type": "StructProperty",
+                  "name": "Item",
+                  "propertyTagType": {
+                    "name": "StructProperty",
+                    "children": [
+                      {
+                        "name": "InventoryItem",
+                        "children": [
+                          {
+                            "name": "/Script/FactoryGame",
+                            "children": []
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "flags": 8,
+                  "value": {
+                    "itemReference": {
+                      "levelName": "",
+                      "pathName": ""
+                    },
+                    "itemState": {
+                      "hasValidStruct": false
+                    }
+                  }
+                },
+                "NumItems": {
+                  "type": "IntProperty",
+                  "name": "NumItems",
+                  "propertyTagType": {
+                    "name": "IntProperty",
+                    "children": []
+                  },
+                  "value": 0
+                }
+              }
+            }
+          ]
+        },
+        "mArbitrarySlotSizes": {
+          "type": "ArrayProperty",
+          "name": "mArbitrarySlotSizes",
+          "propertyTagType": {
+            "name": "ArrayProperty",
+            "children": [
+              {
+                "name": "IntProperty",
+                "children": []
+              }
+            ]
+          },
+          "values": [
+            0
+          ]
+        },
+        "mAllowedItemDescriptors": {
+          "type": "ArrayProperty",
+          "name": "mAllowedItemDescriptors",
+          "propertyTagType": {
+            "name": "ArrayProperty",
+            "children": [
+              {
+                "name": "ObjectProperty",
+                "children": []
+              }
+            ]
+          },
+          "values": [
+            {
+              "levelName": "",
+              "pathName": ""
+            }
+          ]
+        }
+      },
+      "specialProperties": {
+        "type": "EmptySpecialProperties"
+      },
+      "trailingData": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "saveCustomVersion": 0,
+      "shouldMigrateObjectRefsToPersistent": false,
+      "parentEntityName": "Persistent_Level:PersistentLevel.Build_ConstructorMk1_C_2147477255",
+      "type": "SaveComponent"
+    },
+    {
+      "typePath": "/Script/FactoryGame.FGInventoryComponent",
+      "rootObject": "Persistent_Level",
+      "instanceName": "Persistent_Level:PersistentLevel.Build_ConstructorMk1_C_2147477255.OutputInventory",
+      "flags": 262152,
+      "properties": {
+        "mInventoryStacks": {
+          "type": "ArrayProperty",
+          "name": "mInventoryStacks",
+          "propertyTagType": {
+            "name": "ArrayProperty",
+            "children": [
+              {
+                "name": "StructProperty",
+                "children": [
+                  {
+                    "name": "InventoryStack",
+                    "children": [
+                      {
+                        "name": "/Script/FactoryGame",
+                        "children": []
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "values": [
+            {
+              "type": "InventoryStack",
+              "properties": {
+                "Item": {
+                  "type": "StructProperty",
+                  "name": "Item",
+                  "propertyTagType": {
+                    "name": "StructProperty",
+                    "children": [
+                      {
+                        "name": "InventoryItem",
+                        "children": [
+                          {
+                            "name": "/Script/FactoryGame",
+                            "children": []
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "flags": 8,
+                  "value": {
+                    "itemReference": {
+                      "levelName": "",
+                      "pathName": ""
+                    },
+                    "itemState": {
+                      "hasValidStruct": false
+                    }
+                  }
+                },
+                "NumItems": {
+                  "type": "IntProperty",
+                  "name": "NumItems",
+                  "propertyTagType": {
+                    "name": "IntProperty",
+                    "children": []
+                  },
+                  "value": 0
+                }
+              }
+            },
+            {
+              "type": "InventoryStack",
+              "properties": {
+                "Item": {
+                  "type": "StructProperty",
+                  "name": "Item",
+                  "propertyTagType": {
+                    "name": "StructProperty",
+                    "children": [
+                      {
+                        "name": "InventoryItem",
+                        "children": [
+                          {
+                            "name": "/Script/FactoryGame",
+                            "children": []
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "flags": 8,
+                  "value": {
+                    "itemReference": {
+                      "levelName": "",
+                      "pathName": ""
+                    },
+                    "itemState": {
+                      "hasValidStruct": false
+                    }
+                  }
+                },
+                "NumItems": {
+                  "type": "IntProperty",
+                  "name": "NumItems",
+                  "propertyTagType": {
+                    "name": "IntProperty",
+                    "children": []
+                  },
+                  "value": 0
+                }
+              }
+            }
+          ]
+        },
+        "mArbitrarySlotSizes": {
+          "type": "ArrayProperty",
+          "name": "mArbitrarySlotSizes",
+          "propertyTagType": {
+            "name": "ArrayProperty",
+            "children": [
+              {
+                "name": "IntProperty",
+                "children": []
+              }
+            ]
+          },
+          "values": [
+            0,
+            0
+          ]
+        },
+        "mAllowedItemDescriptors": {
+          "type": "ArrayProperty",
+          "name": "mAllowedItemDescriptors",
+          "propertyTagType": {
+            "name": "ArrayProperty",
+            "children": [
+              {
+                "name": "ObjectProperty",
+                "children": []
+              }
+            ]
+          },
+          "values": [
+            {
+              "levelName": "",
+              "pathName": ""
+            },
+            {
+              "levelName": "",
+              "pathName": "/Script/FactoryGame.FGItemDescriptor"
+            }
+          ]
+        }
+      },
+      "specialProperties": {
+        "type": "EmptySpecialProperties"
+      },
+      "trailingData": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "saveCustomVersion": 0,
+      "shouldMigrateObjectRefsToPersistent": false,
+      "parentEntityName": "Persistent_Level:PersistentLevel.Build_ConstructorMk1_C_2147477255",
+      "type": "SaveComponent"
+    },
+    {
+      "typePath": "/Script/FactoryGame.FGPowerInfoComponent",
+      "rootObject": "Persistent_Level",
+      "instanceName": "Persistent_Level:PersistentLevel.Build_ConstructorMk1_C_2147477255.powerInfo",
+      "flags": 262152,
+      "properties": {
+        "mTargetConsumption": {
+          "type": "FloatProperty",
+          "name": "mTargetConsumption",
+          "propertyTagType": {
+            "name": "FloatProperty",
+            "children": []
+          },
+          "value": 0.10000000149011612
+        }
+      },
+      "specialProperties": {
+        "type": "EmptySpecialProperties"
+      },
+      "trailingData": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "saveCustomVersion": 0,
+      "shouldMigrateObjectRefsToPersistent": false,
+      "parentEntityName": "Persistent_Level:PersistentLevel.Build_ConstructorMk1_C_2147477255",
+      "type": "SaveComponent"
+    },
+    {
+      "typePath": "/Script/FactoryGame.FGInventoryComponent",
+      "rootObject": "Persistent_Level",
+      "instanceName": "Persistent_Level:PersistentLevel.Build_ConstructorMk1_C_2147477255.InventoryPotential",
+      "flags": 262152,
+      "properties": {
+        "mInventoryStacks": {
+          "type": "ArrayProperty",
+          "name": "mInventoryStacks",
+          "propertyTagType": {
+            "name": "ArrayProperty",
+            "children": [
+              {
+                "name": "StructProperty",
+                "children": [
+                  {
+                    "name": "InventoryStack",
+                    "children": [
+                      {
+                        "name": "/Script/FactoryGame",
+                        "children": []
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "values": [
+            {
+              "type": "InventoryStack",
+              "properties": {
+                "Item": {
+                  "type": "StructProperty",
+                  "name": "Item",
+                  "propertyTagType": {
+                    "name": "StructProperty",
+                    "children": [
+                      {
+                        "name": "InventoryItem",
+                        "children": [
+                          {
+                            "name": "/Script/FactoryGame",
+                            "children": []
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "flags": 8,
+                  "value": {
+                    "itemReference": {
+                      "levelName": "",
+                      "pathName": ""
+                    },
+                    "itemState": {
+                      "hasValidStruct": false
+                    }
+                  }
+                },
+                "NumItems": {
+                  "type": "IntProperty",
+                  "name": "NumItems",
+                  "propertyTagType": {
+                    "name": "IntProperty",
+                    "children": []
+                  },
+                  "value": 0
+                }
+              }
+            },
+            {
+              "type": "InventoryStack",
+              "properties": {
+                "Item": {
+                  "type": "StructProperty",
+                  "name": "Item",
+                  "propertyTagType": {
+                    "name": "StructProperty",
+                    "children": [
+                      {
+                        "name": "InventoryItem",
+                        "children": [
+                          {
+                            "name": "/Script/FactoryGame",
+                            "children": []
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "flags": 8,
+                  "value": {
+                    "itemReference": {
+                      "levelName": "",
+                      "pathName": ""
+                    },
+                    "itemState": {
+                      "hasValidStruct": false
+                    }
+                  }
+                },
+                "NumItems": {
+                  "type": "IntProperty",
+                  "name": "NumItems",
+                  "propertyTagType": {
+                    "name": "IntProperty",
+                    "children": []
+                  },
+                  "value": 0
+                }
+              }
+            },
+            {
+              "type": "InventoryStack",
+              "properties": {
+                "Item": {
+                  "type": "StructProperty",
+                  "name": "Item",
+                  "propertyTagType": {
+                    "name": "StructProperty",
+                    "children": [
+                      {
+                        "name": "InventoryItem",
+                        "children": [
+                          {
+                            "name": "/Script/FactoryGame",
+                            "children": []
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "flags": 8,
+                  "value": {
+                    "itemReference": {
+                      "levelName": "",
+                      "pathName": ""
+                    },
+                    "itemState": {
+                      "hasValidStruct": false
+                    }
+                  }
+                },
+                "NumItems": {
+                  "type": "IntProperty",
+                  "name": "NumItems",
+                  "propertyTagType": {
+                    "name": "IntProperty",
+                    "children": []
+                  },
+                  "value": 0
+                }
+              }
+            },
+            {
+              "type": "InventoryStack",
+              "properties": {
+                "Item": {
+                  "type": "StructProperty",
+                  "name": "Item",
+                  "propertyTagType": {
+                    "name": "StructProperty",
+                    "children": [
+                      {
+                        "name": "InventoryItem",
+                        "children": [
+                          {
+                            "name": "/Script/FactoryGame",
+                            "children": []
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "flags": 8,
+                  "value": {
+                    "itemReference": {
+                      "levelName": "",
+                      "pathName": ""
+                    },
+                    "itemState": {
+                      "hasValidStruct": false
+                    }
+                  }
+                },
+                "NumItems": {
+                  "type": "IntProperty",
+                  "name": "NumItems",
+                  "propertyTagType": {
+                    "name": "IntProperty",
+                    "children": []
+                  },
+                  "value": 0
+                }
+              }
+            }
+          ]
+        },
+        "mArbitrarySlotSizes": {
+          "type": "ArrayProperty",
+          "name": "mArbitrarySlotSizes",
+          "propertyTagType": {
+            "name": "ArrayProperty",
+            "children": [
+              {
+                "name": "IntProperty",
+                "children": []
+              }
+            ]
+          },
+          "values": [
+            1,
+            1,
+            1,
+            1
+          ]
+        },
+        "mAllowedItemDescriptors": {
+          "type": "ArrayProperty",
+          "name": "mAllowedItemDescriptors",
+          "propertyTagType": {
+            "name": "ArrayProperty",
+            "children": [
+              {
+                "name": "ObjectProperty",
+                "children": []
+              }
+            ]
+          },
+          "values": [
+            {
+              "levelName": "",
+              "pathName": ""
+            },
+            {
+              "levelName": "",
+              "pathName": ""
+            },
+            {
+              "levelName": "",
+              "pathName": ""
+            },
+            {
+              "levelName": "",
+              "pathName": ""
+            }
+          ]
+        }
+      },
+      "specialProperties": {
+        "type": "EmptySpecialProperties"
+      },
+      "trailingData": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "saveCustomVersion": 0,
+      "shouldMigrateObjectRefsToPersistent": false,
+      "parentEntityName": "Persistent_Level:PersistentLevel.Build_ConstructorMk1_C_2147477255",
+      "type": "SaveComponent"
+    }
+  ]
+}
