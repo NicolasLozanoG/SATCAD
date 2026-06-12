@@ -82,8 +82,8 @@ function downloadBufferAsFile(buffer, filename) {
 
 export const exportToBlueprint = async (buildings, connections = [], blueprintName = "SatCAD_Export") => {
   try {
-    const sbpReq = await fetch('/template.sbp');
-    const sbpcfgReq = await fetch('/template.sbpcfg');
+    const sbpReq = await fetch(`${import.meta.env.BASE_URL}template.sbp`);
+    const sbpcfgReq = await fetch(`${import.meta.env.BASE_URL}template.sbpcfg`);
 
     if (!sbpReq.ok || !sbpcfgReq.ok) {
       throw new Error("No se pudo cargar el archivo Template.sbp de la carpeta public.");
